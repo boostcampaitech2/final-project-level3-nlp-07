@@ -96,7 +96,7 @@ def inference(pipe):
     while 1:
         try:
             #frame=pipe.recv()
-            frame=AudioSegment.from_wav('/opt/ml/espnet-asr/tools/testdown/split/yes_6001.wav')
+            frame=AudioSegment.from_wav('/opt/ml/espnet-asr/tools/testdown/yes_6.wav')
         except:
             print("Waiting")
             time.sleep(1)
