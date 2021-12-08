@@ -23,6 +23,10 @@ def pcm2float(sig, dtype='float64'):
 
 
 def stream_input():
+from multiprocessing import Process,Pipe
+
+
+def stream_input(pipe):
     #AUDIO INPUT
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
@@ -59,27 +63,24 @@ def stream_input():
                 except:
                     frames=sound   
                 endure=0
-        with lock:
-            try:
+        try:
+            if frames:
+                pipe.send(frames)
+                print("appending")
+                del frames
                 
-                if frames:
-                    myaudio.append(check)
-                    print("appending",len(myaudio))
-                    del frames
-                    
-                    kill=0
-            except:
-                kill+=1
-                if kill%20==0:
-                    print("killing",kill)
-                if kill==100:
-                    myaudio.append('END')
-                    print('added end')
-                    print("SI ENDED")
-                    return
+                kill=0
+        except:
+            kill+=1
+            if kill%20==0:
+                print("killing",kill)
+            if kill==100:
+                pipe.send('END')
+                print("SI ENDED")
+                return
             
 
-def inference():
+def inference(pipe):
     while 1:
         with lock:
             print(len(myaudio))
@@ -92,6 +93,12 @@ def inference():
             else:
                 pcm2float(frame.get_array_of_samples())
         try:
+            frame=pipe.recv()
+        except:
+            print("Waiting")
+            time.sleep(1)
+            continue
+        else:
             if frame=='END':
                 print("INF ENDED")
                 return
@@ -99,11 +106,16 @@ def inference():
             pass
         
         preprocess_fn=ASRTask.build_preprocess_fn(speech2text.asr_train_args, False)
+            print("POP!!")
+
+                #preprocessing
+                #model inference
 
 if __name__=="__main__":
-    si = Process(target=stream_input)
+    stream_pipe,inference_pipe=Pipe()
+    si = Process(target=stream_input,args=(stream_pipe,))
     si.start()
-    inf = Process(target=inference)
+    inf = Process(target=inference,args=(inference_pipe,))
     inf.start()
     
     si.join()
