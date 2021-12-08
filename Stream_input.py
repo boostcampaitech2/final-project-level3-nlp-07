@@ -47,7 +47,7 @@ def stream_input(pipe):
         try:
             if frames:
                 pipe.send(frames)
-                print("appending",len(pipe))
+                print("appending")
                 del frames
                 
                 kill=0
