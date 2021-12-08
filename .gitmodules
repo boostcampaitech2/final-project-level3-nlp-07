@@ -1,0 +1,3 @@
+[submodule "espnet-asr"]
+	path = espnet-asr
+	url = https://github.com/hchung12/espnet-asr
