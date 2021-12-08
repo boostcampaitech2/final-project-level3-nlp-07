@@ -5,10 +5,21 @@ from pydub.utils import db_to_float
 import time
 from collections import deque
 from multiprocessing import Process,Queue,Lock,Pool
-
+import soundfile
+from espnet2.tasks.asr import ASRTask
+import numpy as np
 
 myaudio=deque()
 lock=Lock()
+
+def pcm2float(sig, dtype='float64'):
+    sig = np.asarray(sig)
+    if sig.dtype.kind not in 'iu':
+        raise TypeError("'sig' must be an array of integers")
+    dtype = np.dtype(dtype)
+    if dtype.kind != 'f':
+        raise TypeError("'dtype' must be a floating point type")
+
 
 
 def stream_input():
@@ -79,15 +90,15 @@ def inference():
                 print("Waiting")
                 time.sleep(1)
             else:
-                print("POP!!")
+                pcm2float(frame.get_array_of_samples())
         try:
             if frame=='END':
                 print("INF ENDED")
                 return
         except:
             pass
-                #preprocessing
-                #model inference
+        
+        preprocess_fn=ASRTask.build_preprocess_fn(speech2text.asr_train_args, False)
 
 if __name__=="__main__":
     si = Process(target=stream_input)
