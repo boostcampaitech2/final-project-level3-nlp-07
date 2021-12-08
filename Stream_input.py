@@ -3,18 +3,43 @@ from pydub import AudioSegment
 from pydub.utils import db_to_float
 import time
 from multiprocessing import Process,Pipe
-from espnet_asr.bin import asr_inference
+from espnet2.tasks.asr import ASRTask
+from ESPNET.asr_inference import Speech2Text
 import numpy as np
+import torch
 
-model,preprocess_fn=asr_inference.model()
+model = Speech2Text(
+        asr_train_config="/opt/ml/espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
+        asr_model_file='/opt/ml/espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
+        lm_train_config=None,
+        lm_file=None,
+        token_type=None,
+        bpemodel=None,
+        device='cuda',
+        maxlenratio=0.0,
+        minlenratio=0.0,
+        dtype='float32',
+        beam_size=20,
+        ctc_weight=0.3,
+        lm_weight=1.0,
+        penalty=0.0,
+        nbest=1,
+    )
+preprocess_fn=ASRTask.build_preprocess_fn(model.asr_train_args, False)
 
-def pcm2float(sig, dtype='float64'):
+
+def pcm2float(sig, dtype='float32'):
     sig = np.asarray(sig)
     if sig.dtype.kind not in 'iu':
         raise TypeError("'sig' must be an array of integers")
     dtype = np.dtype(dtype)
     if dtype.kind != 'f':
         raise TypeError("'dtype' must be a floating point type")
+    i = np.iinfo(sig.dtype)
+    abs_max = 2 ** (i.bits - 1)
+    offset = i.min + abs_max
+    return (sig.astype(dtype) - offset) / abs_max
+
         
 def stream_input(pipe):
     #AUDIO INPUT
@@ -30,7 +55,7 @@ def stream_input(pipe):
     stream = audio.open(format=FORMAT, channels=CHANNELS,
                     rate=RATE, input=True,
                     frames_per_buffer=CHUNK)
-
+    
     min_silence=int(RATE/CHUNK*0.1)
     endure=0
     print ("recording start")
@@ -38,7 +63,7 @@ def stream_input(pipe):
         while 1:
             data = stream.read(CHUNK,exception_on_overflow = False)
             sound=AudioSegment(data=data,sample_width=2,frame_rate=RATE,channels=CHANNELS)
-
+            
             if sound.rms<SILENCE_THRESH*sound.max_possible_amplitude:
                 if endure<min_silence:
                     endure+=1
@@ -70,7 +95,8 @@ def stream_input(pipe):
 def inference(pipe):
     while 1:
         try:
-            frame=pipe.recv()
+            #frame=pipe.recv()
+            frame=AudioSegment.from_wav('/opt/ml/espnet-asr/tools/testdown/split/yes_6001.wav')
         except:
             print("Waiting")
             time.sleep(1)
@@ -80,18 +106,14 @@ def inference(pipe):
                 print("INF ENDED")
                 return 
             frame=pcm2float(frame.get_array_of_samples())
-            tens=preprocess_fn('1',frame)#input : (uid,array)-> output : Tensor (1,length)
-            output=model({'speech':tens,'speech_len':tens.size(1)})
+            print(frame)
+            tens=preprocess_fn('1',{'speech':frame})#input : (uid,dict)-> output : dict{'speech':array}
+            print({'speech':torch.from_numpy(tens['speech']).size()})
+            output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
             print(output)
+            return
 
 if __name__=="__main__":
-    stream_pipe,inference_pipe=Pipe()
-    si = Process(target=stream_input,args=(stream_pipe,))
-    si.start()
-    inf = Process(target=inference,args=(inference_pipe,))
-    inf.start()
+    inference(None)
     
-    si.join()
-    inf.join()
     
-    exit(0)
