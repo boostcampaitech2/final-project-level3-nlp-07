@@ -4,13 +4,13 @@ from pydub import AudioSegment, silence
 from pydub.utils import db_to_float
 import time
 from collections import deque
-from multiprocessing import Process,Queue,Lock,Pool
-import soundfile
+from multiprocessing import Process,Pipe
+from ESPNET.asr_inference import Speech2Text
 from espnet2.tasks.asr import ASRTask
+from espnet_asr.bin import asr_inference
 import numpy as np
 
-myaudio=deque()
-lock=Lock()
+model,preprocess_fn=asr_inference.model()
 
 def pcm2float(sig, dtype='float64'):
     sig = np.asarray(sig)
@@ -19,25 +19,16 @@ def pcm2float(sig, dtype='float64'):
     dtype = np.dtype(dtype)
     if dtype.kind != 'f':
         raise TypeError("'dtype' must be a floating point type")
-
-
-
-def stream_input():
-from multiprocessing import Process,Pipe
-
-
+        
 def stream_input(pipe):
     #AUDIO INPUT
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
     RATE = 44100
     CHUNK = 1024
-    RECORD_SECONDS = 1
-    WAVE_OUTPUT_FILENAME = "output.wav"
     SILENCE_THRESH = db_to_float(-30)
     audio = pyaudio.PyAudio()
     kill=0
-    check=0
     
     # start Recording
     stream = audio.open(format=FORMAT, channels=CHANNELS,
@@ -82,16 +73,6 @@ def stream_input(pipe):
 
 def inference(pipe):
     while 1:
-        with lock:
-            print(len(myaudio))
-            try:
-                frame=myaudio.popleft()
-                print(f"Poped {frame}")
-            except:
-                print("Waiting")
-                time.sleep(1)
-            else:
-                pcm2float(frame.get_array_of_samples())
         try:
             frame=pipe.recv()
         except:
@@ -101,15 +82,11 @@ def inference(pipe):
         else:
             if frame=='END':
                 print("INF ENDED")
-                return
-        except:
-            pass
-        
-        preprocess_fn=ASRTask.build_preprocess_fn(speech2text.asr_train_args, False)
-            print("POP!!")
-
-                #preprocessing
-                #model inference
+                return 
+            frame=pcm2float(frame.get_array_of_samples())
+            tens=preprocess_fn('1',frame)#input : (uid,array)-> output : Tensor (1,length)
+            output=model({'speech':tens,'speech_len':tens.size(1)})
+            print(output)
 
 if __name__=="__main__":
     stream_pipe,inference_pipe=Pipe()
