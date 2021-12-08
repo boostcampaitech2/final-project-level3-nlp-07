@@ -1,12 +1,8 @@
 import pyaudio
-import wave
-from pydub import AudioSegment, silence
+from pydub import AudioSegment
 from pydub.utils import db_to_float
 import time
-from collections import deque
 from multiprocessing import Process,Pipe
-from ESPNET.asr_inference import Speech2Text
-from espnet2.tasks.asr import ASRTask
 from espnet_asr.bin import asr_inference
 import numpy as np
 
