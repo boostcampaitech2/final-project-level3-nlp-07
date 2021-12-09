@@ -56,7 +56,7 @@ def stream_input(pipe):
                     rate=RATE, input=True,
                     frames_per_buffer=CHUNK)
     
-    min_silence=int(RATE/CHUNK*0.1)
+    min_silence=int(RATE/CHUNK*0.2)
     endure=0
     print ("recording start")
     while 1:
@@ -68,6 +68,7 @@ def stream_input(pipe):
                 if endure<min_silence:
                     endure+=1
                 else:
+                    
                     break
             else:
                 try:
@@ -76,7 +77,11 @@ def stream_input(pipe):
                     frames=sound   
                 endure=0
         try:
+            
             if frames:
+                if len(frames)<=300:
+                    raise Exception("Too short!")
+                
                 pipe.send(frames)
                 print("appending")
                 del frames
@@ -88,14 +93,20 @@ def stream_input(pipe):
                 print("killing",kill)
             if kill==100:
                 pipe.send('END')
-                print("SI ENDED")
+                print("SI ENDED\n")
                 return
+        
             
+                
+                
 
 def inference(pipe):
     while 1:
         try:
-            frame=AudioSegment.from_wav('/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/testdown/yes_6.wav')
+            frame=pipe.recv()
+            if type(frame)==str:
+                print("INF ENDED")
+                return 
             frame=frame.set_frame_rate(16000)
             frame=frame.set_channels(1)
             frame=frame.set_sample_width(2)
@@ -104,14 +115,12 @@ def inference(pipe):
             time.sleep(1)
             continue
         else:
-            if frame=='END':
-                print("INF ENDED")
-                return 
+            
             frame=pcm2float(frame.get_array_of_samples())
             tens=preprocess_fn('1',{'speech':frame})#input : (uid,dict)-> output : dict{'speech':array}
             output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
             print(output[0][0])
-            return
+            
 
 if __name__=="__main__":
     parent_conn, child_conn = Pipe()
@@ -119,8 +128,11 @@ if __name__=="__main__":
     si.start()
     inf=Process(target=inference,args=(parent_conn,))
     inf.start()
+    
     si.join()
     inf.join()
+    
     exit()
+    
     
     
