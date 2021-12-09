@@ -9,8 +9,8 @@ import numpy as np
 import torch
 
 model = Speech2Text(
-        asr_train_config="/opt/ml/espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
-        asr_model_file='/opt/ml/espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
+        asr_train_config="/opt/ml/final-project-level3-nlp-07/espnet-asr//tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
+        asr_model_file='/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
         lm_train_config=None,
         lm_file=None,
         token_type=None,
@@ -62,7 +62,7 @@ def stream_input(pipe):
     while 1:
         while 1:
             data = stream.read(CHUNK,exception_on_overflow = False)
-            sound=AudioSegment(data=data,sample_width=2,frame_rate=RATE,channels=CHANNELS)
+            sound=AudioSegment(data=data,sample_width=2,frame_rate=44100,channels=CHANNELS)
             
             if sound.rms<SILENCE_THRESH*sound.max_possible_amplitude:
                 if endure<min_silence:
@@ -95,8 +95,10 @@ def stream_input(pipe):
 def inference(pipe):
     while 1:
         try:
-            #frame=pipe.recv()
-            frame=AudioSegment.from_wav('/opt/ml/espnet-asr/tools/testdown/yes_6.wav')
+            frame=pipe.recv()
+            frame=frame.set_frame_rate(16000)
+            frame=frame.set_channels(1)
+            frame=frame.set_sample_width(2)
         except:
             print("Waiting")
             time.sleep(1)
@@ -106,14 +108,19 @@ def inference(pipe):
                 print("INF ENDED")
                 return 
             frame=pcm2float(frame.get_array_of_samples())
-            print(frame)
             tens=preprocess_fn('1',{'speech':frame})#input : (uid,dict)-> output : dict{'speech':array}
-            print({'speech':torch.from_numpy(tens['speech']).size()})
             output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
-            print(output)
+            print(output[0][0])
             return
 
 if __name__=="__main__":
-    inference(None)
+    parent_conn, child_conn = Pipe()
+    si=Process(target=stream_input,args=(child_conn,))
+    si.start()
+    inf=Process(target=inference,args=(parent_conn,))
+    inf.start()
+    si.join()
+    inf.join()
+    exit()
     
     
