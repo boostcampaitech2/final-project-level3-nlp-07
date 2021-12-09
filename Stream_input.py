@@ -60,6 +60,7 @@ def stream_input(pipe):
     endure=0
     print ("recording start")
     while 1:
+
         while 1:
             data = stream.read(CHUNK,exception_on_overflow = False)
             sound=AudioSegment(data=data,sample_width=2,frame_rate=44100,channels=CHANNELS)
@@ -68,7 +69,6 @@ def stream_input(pipe):
                 if endure<min_silence:
                     endure+=1
                 else:
-                    
                     break
             else:
                 try:
@@ -76,17 +76,16 @@ def stream_input(pipe):
                 except:
                     frames=sound   
                 endure=0
+
         try:
-            
-            if frames:
-                if len(frames)<=300:
-                    raise Exception("Too short!")
+            if len(frames)<=300:
+                raise Exception("Too short!")
                 
-                pipe.send(frames)
-                print("appending")
-                del frames
+            pipe.send(frames)
+            print("appending")
+            del frames
                 
-                kill=0
+            kill=0
         except:
             kill+=1
             if kill%20==0:
@@ -95,10 +94,7 @@ def stream_input(pipe):
                 pipe.send('END')
                 print("SI ENDED\n")
                 return
-        
-            
-                
-                
+
 
 def inference(pipe):
     while 1:
@@ -107,15 +103,14 @@ def inference(pipe):
             if type(frame)==str:
                 print("INF ENDED")
                 return 
-            frame=frame.set_frame_rate(16000)
-            frame=frame.set_channels(1)
-            frame=frame.set_sample_width(2)
         except:
             print("Waiting")
             time.sleep(1)
             continue
         else:
-            
+            frame=frame.set_frame_rate(16000)
+            frame=frame.set_channels(1)
+            frame=frame.set_sample_width(2)
             frame=pcm2float(frame.get_array_of_samples())
             tens=preprocess_fn('1',{'speech':frame})#input : (uid,dict)-> output : dict{'speech':array}
             output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
