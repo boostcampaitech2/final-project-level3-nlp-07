@@ -4,13 +4,13 @@ from pydub.utils import db_to_float
 import time
 from multiprocessing import Process,Pipe
 from espnet2.tasks.asr import ASRTask
-from ESPNET.asr_inference import Speech2Text
+from espnet2.bin.asr_inference import Speech2Text
 import numpy as np
 import torch
 
 model = Speech2Text(
-        asr_train_config="./espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
-        asr_model_file='./espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
+        asr_train_config="./ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
+        asr_model_file='./ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
         lm_train_config=None,
         lm_file=None,
         token_type=None,
@@ -95,7 +95,7 @@ def stream_input(pipe):
 def inference(pipe):
     while 1:
         try:
-            frame=pipe.recv()
+            frame=AudioSegment.from_wav('/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/testdown/yes_6.wav')
             frame=frame.set_frame_rate(16000)
             frame=frame.set_channels(1)
             frame=frame.set_sample_width(2)
