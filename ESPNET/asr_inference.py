@@ -166,6 +166,7 @@ class Speech2Text:
         self.device = device
         self.dtype = dtype
         self.nbest = nbest
+        
 
     @torch.no_grad()
     def __call__(
@@ -180,7 +181,7 @@ class Speech2Text:
 
         """
         assert check_argument_types()
-
+        
         # Input as audio signal
         if isinstance(speech, np.ndarray):
             speech = torch.tensor(speech)
