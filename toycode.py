@@ -27,9 +27,18 @@ y[np.arange(len(iris.target)), iris.target] = 1
 X_train, X_test, y_train, y_test = train_test_split(iris.data, y, test_size=0.25)
 x = Variable(torch.from_numpy(X_train).float(), requires_grad=True)
 y = Variable(torch.from_numpy(y_train).float())
+print(x.size(),y.size())
 
+input()
 import torch.optim as optim
 
 net = Net()
 optimizer = optim.SGD(net.parameters(), lr=0.01)
 criterion = nn.MSELoss()
+
+net.eval()
+dummy = torch.ones(4,4)
+import torch.onnx
+
+torch.onnx.export(net,dummy,"test.onnx",input_names=['input'],
+                    output_names=['output'],export_params=True)

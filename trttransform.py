@@ -7,8 +7,12 @@ import torch.onnx
 from modelwrapping import TestWrapperModel
 import torch.nn as nn
 import onnx
-
+import transformers.onnx
 ONNX_FILE_PATH = '/opt/ml/final-project-level3-nlp-07/onnxtrans.onnx'
+
+
+
+
 
 def pcm2float(sig, dtype='float32'):
     sig = np.asarray(sig)
@@ -40,21 +44,23 @@ model = Speech2Text(
         nbest=1,
     )
 
+
 test_model = TestWrapperModel(model)
-test_model.eval()
 
 
-SOUND_PATH = "/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/testdown/split/yes_6001.wav"
-preprocess_fn=ASRTask.build_preprocess_fn(model.asr_train_args, False)
-sound= AudioSegment.from_wav(SOUND_PATH)
+with torch.no_grad():
+    test_model.eval()
+    SOUND_PATH = "/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/testdown/split/yes_6001.wav"
+    preprocess_fn=ASRTask.build_preprocess_fn(model.asr_train_args, False)
+    sound= AudioSegment.from_wav(SOUND_PATH)
 
-sound = pcm2float(sound.get_array_of_samples())
-sound= preprocess_fn('1',{'speech':sound})
-sound =torch.from_numpy(sound['speech'])
+    sound = pcm2float(sound.get_array_of_samples())
+    sound= preprocess_fn('1',{'speech':sound})
+    sound =torch.from_numpy(sound['speech'])
+    print(sound.size())
+    # dummy_input = torch.ones((80000,1),dtype=torch.float32)
+    # print(dummy_input.size())
+    onnx_model = torch.onnx.export(test_model,sound,"letussleep.onnx",input_names=['input'],
+                    output_names=['output'],export_params=True)
 
-
-
-onnx_model = torch.onnx.export(test_model,sound,"letussleep.onnx",input_names=['input'],
-                  output_names=['output'],export_params=True,opset_version=10)
-
-print(onnx.checker.check_model(onnx_model))
+    

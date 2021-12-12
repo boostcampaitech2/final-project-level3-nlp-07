@@ -46,7 +46,7 @@ class Speech2Text:
         [(text, token, token_int, hypothesis object), ...]
 
     """
-
+    @torch.no_grad()
     def __init__(
         self,
         asr_train_config: Union[Path, str],
@@ -67,7 +67,7 @@ class Speech2Text:
         nbest: int = 1,
     ):
         assert check_argument_types()
-
+        
         # 1. Build ASR model
         scorers = {}
         
