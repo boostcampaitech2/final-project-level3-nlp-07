@@ -4,18 +4,18 @@ from pydub.utils import db_to_float
 import time
 from multiprocessing import Process,Pipe
 from espnet2.tasks.asr import ASRTask
-from ESPNET.asr_inference import Speech2Text
+from espnet2.bin.asr_inference import Speech2Text
 import numpy as np
 import torch
 
 model = Speech2Text(
-        asr_train_config="./espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
-        asr_model_file='./espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
+        asr_train_config="./ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml",
+        asr_model_file='./ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth',
         lm_train_config=None,
         lm_file=None,
         token_type=None,
         bpemodel=None,
-        device='cuda',
+        device='cuda' if torch.cuda.is_available() else 'cpu',
         maxlenratio=0.0,
         minlenratio=0.0,
         dtype='float32',
@@ -56,10 +56,11 @@ def stream_input(pipe):
                     rate=RATE, input=True,
                     frames_per_buffer=CHUNK)
     
-    min_silence=int(RATE/CHUNK*0.1)
+    min_silence=int(RATE/CHUNK*0.2)
     endure=0
     print ("recording start")
     while 1:
+
         while 1:
             data = stream.read(CHUNK,exception_on_overflow = False)
             sound=AudioSegment(data=data,sample_width=2,frame_rate=44100,channels=CHANNELS)
@@ -75,43 +76,46 @@ def stream_input(pipe):
                 except:
                     frames=sound   
                 endure=0
+
         try:
-            if frames:
-                pipe.send(frames)
-                print("appending")
-                del frames
+            if len(frames)<=300:
+                raise Exception("Too short!")
                 
-                kill=0
+            pipe.send(frames)
+            print("appending")
+            del frames
+                
+            kill=0
         except:
             kill+=1
             if kill%20==0:
                 print("killing",kill)
             if kill==100:
                 pipe.send('END')
-                print("SI ENDED")
+                print("SI ENDED\n")
                 return
-            
+
 
 def inference(pipe):
     while 1:
         try:
             frame=pipe.recv()
-            frame=frame.set_frame_rate(16000)
-            frame=frame.set_channels(1)
-            frame=frame.set_sample_width(2)
+            if type(frame)==str:
+                print("INF ENDED")
+                return 
         except:
             print("Waiting")
             time.sleep(1)
             continue
         else:
-            if frame=='END':
-                print("INF ENDED")
-                return 
+            frame=frame.set_frame_rate(16000)
+            frame=frame.set_channels(1)
+            frame=frame.set_sample_width(2)
             frame=pcm2float(frame.get_array_of_samples())
             tens=preprocess_fn('1',{'speech':frame})#input : (uid,dict)-> output : dict{'speech':array}
             output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
             print(output[0][0])
-            return
+            
 
 if __name__=="__main__":
     parent_conn, child_conn = Pipe()
@@ -119,8 +123,11 @@ if __name__=="__main__":
     si.start()
     inf=Process(target=inference,args=(parent_conn,))
     inf.start()
+    
     si.join()
     inf.join()
+    
     exit()
+    
     
     
