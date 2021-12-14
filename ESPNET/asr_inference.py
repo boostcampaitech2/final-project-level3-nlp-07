@@ -7,7 +7,7 @@ from typing import Optional
 from typing import Sequence
 from typing import Tuple
 from typing import Union
-
+import os
 
 import numpy as np
 import torch
@@ -34,6 +34,8 @@ from espnet2.utils.types import str2bool
 from espnet2.utils.types import str2triple_str
 from espnet2.utils.types import str_or_none
 from espnet_model_zoo.downloader import ModelDownloader
+import torch.onnx
+
 
 class Speech2Text:
     """Speech2Text class
@@ -46,7 +48,7 @@ class Speech2Text:
         [(text, token, token_int, hypothesis object), ...]
 
     """
-    @torch.no_grad()
+    
     def __init__(
         self,
         asr_train_config: Union[Path, str],
@@ -196,10 +198,38 @@ class Speech2Text:
         batch = to_device(batch, device=self.device)
 
         # b. Forward Encoder
+        #######################################
+        
+        if os.path.isfile("./encoder.onnx"):
+            pass
+        else:
+            feats,feats_len = self.asr_model._extract_feats(**batch)
+            feats,feats_len = self.asr_model.specaug(feats,feats_len)
+            feats,feats_len = self.asr_model.normalize(feats,feats_len)
+            encfrag = self.asr_model.encoder.to(self.device)
+            
+            dummy = (feats,feats_len)
+            print("#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            print(encfrag(*dummy))
+            print("#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            torch.onnx.export(encfrag,args=(feats,feats_len),f="./frag01enc.onnx",input_names=['input'],
+                    output_names=['output'],export_params=True,opset_version=10)
+        
+        #######################################
         enc, _ = self.asr_model.encode(**batch)
         assert len(enc) == 1, len(enc)
 
         # c. Passed the encoder result and the beam search
+        # with torch.no_grad():
+        #     self.beam_search.eval()
+        #     if os.path.isfile("./beamsearch.onnx"):
+        #             pass
+        #     else:
+        #         torch.onnx.export(self.beam_search,(enc[0],torch.tensor(self.maxlenratio,requires_grad=False),torch.tensor(self.minlenratio,requires_grad=False)),"beamsearch.onnx",input_names=['input'],
+        #                 output_names=['output'],export_params=True,opset_version=10)
+        ##################################################
+        
+        
         nbest_hyps = self.beam_search(
             x=enc[0], maxlenratio=self.maxlenratio, minlenratio=self.minlenratio
         )

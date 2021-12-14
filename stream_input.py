@@ -92,10 +92,11 @@ def stream_input(pipe):
                 return
             
 
-def inference(pipe):
+def inference():
     while 1:
         try:
-            frame=pipe.recv()
+            # frame=pipe.recv()
+            frame=AudioSegment.from_wav("/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/testdown/yes_6.wav")
             frame=frame.set_frame_rate(16000)
             frame=frame.set_channels(1)
             frame=frame.set_sample_width(2)
@@ -114,13 +115,14 @@ def inference(pipe):
             return
 
 if __name__=="__main__":
-    parent_conn, child_conn = Pipe()
-    si=Process(target=stream_input,args=(child_conn,))
-    si.start()
-    inf=Process(target=inference,args=(parent_conn,))
-    inf.start()
-    si.join()
-    inf.join()
+    # parent_conn, child_conn = Pipe()
+    # si=Process(target=stream_input,args=(child_conn,))
+    # si.start()
+    # inf=Process(target=inference,args=(parent_conn,))
+    # inf.start()
+    # # si.join()
+    # inf.join()
+    inference()
     exit()
     
     
