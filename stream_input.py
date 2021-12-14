@@ -96,13 +96,14 @@ def stream_input(pipe):
                 return
 
 
-def inference(pipe):
+def inference():
     while 1:
         try:
-            frame=pipe.recv()
-            if type(frame)==str:
-                print("INF ENDED")
-                return 
+            # frame=pipe.recv()
+            frame=AudioSegment.from_wav("/opt/ml/final-project-level3-nlp-07/espnet-asr/tools/testdown/yes_6.wav")
+            frame=frame.set_frame_rate(16000)
+            frame=frame.set_channels(1)
+            frame=frame.set_sample_width(2)
         except:
             print("Waiting")
             time.sleep(1)
