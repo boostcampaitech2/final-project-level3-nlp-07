@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Stream STT Demo</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    </head>
+    <body>
+        <header>
+            <h1>Stream STT Demo</h1>
+        </header>
+        <main>
+            <div id="welcome">
+                <form>
+                    <input type="text" placeholder="Room name">
+                    <button type="submit">Join</button>
+                </form>
+            </div>
+            <div id="call">
+                <p id="displayer"></p>
+                <audio autoplay></audio>
+                <button id="hangup">Hang up</button>
+                <button id="mute">Mute</button>
+            </div>
+        </main>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+        <script src="/public/js/app.js"></script>
+    </body>
