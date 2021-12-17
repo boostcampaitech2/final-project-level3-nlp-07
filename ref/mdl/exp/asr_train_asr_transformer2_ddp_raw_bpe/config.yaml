@@ -7,7 +7,7 @@ best_model_criterion:
 - - valid
   - acc
   - max
-bpemodel: ./espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/data/token_list/bpe_unigram2310/bpe.model
+bpemodel: ./ref/mdl/data/token_list/bpe_unigram2310/bpe.model
 chunk_length: 500
 chunk_shift_ratio: 0.5
 cleaner: null
@@ -84,7 +84,7 @@ no_forward_run: false
 non_linguistic_symbols: null
 normalize: global_mvn
 normalize_conf:
-  stats_file: ./espnet-asr/tools/.cache/espnet/92e47619a479aae2effafd3f190d40e7/exp/asr_stats_raw/train/feats_stats.npz
+  stats_file: ./ref/mdl/exp/asr_stats_raw/train/feats_stats.npz
 num_att_plot: 3
 num_cache_chunks: 1024
 num_iters_per_epoch: null

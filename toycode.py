@@ -29,7 +29,7 @@ x = Variable(torch.from_numpy(X_train).float(), requires_grad=True)
 y = Variable(torch.from_numpy(y_train).float())
 print(x.size(),y.size())
 
-input()
+
 import torch.optim as optim
 
 net = Net()

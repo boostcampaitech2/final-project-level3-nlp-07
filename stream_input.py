@@ -8,15 +8,18 @@ from espnet2.bin.asr_inference import Speech2Text
 import numpy as np
 import torch
 
-
+config_path = './ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml'
+model_path = './ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/model_kspon.pth',
 model = Speech2Text(
-        asr_train_config='./ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/config.yaml',
-        asr_model_file='./ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/model_kspon.pth',
+
+        asr_train_config = config_path,
+        asr_model_file = model_path,
+
         lm_train_config=None,
         lm_file=None,
         token_type=None,
         bpemodel=None,
-        device='cuda',
+        device='cuda' if torch.cuda.is_available() else 'cpu',
         maxlenratio=0.0,
         minlenratio=0.0,
         dtype='float32',
@@ -81,11 +84,13 @@ def stream_input(pipe):
         try:
             if len(frames)<=300:
                 raise Exception("Too short!")
+
                 
             pipe.send(frames)
             print("appending")
             del frames
                 
+
             kill=0
         except:
             kill+=1
@@ -95,6 +100,7 @@ def stream_input(pipe):
                 pipe.send('END')
                 print("SI ENDED\n")
                 return
+
 
 
 def inference(pipe):
@@ -118,17 +124,16 @@ def inference(pipe):
             print(output[0][0])
             
 
+
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
-        
     si=Process(target=stream_input,args=(child_conn,))
     si.start()
     inf=Process(target=inference,args=(parent_conn))
     inf.start()
-    
     si.join()
     inf.join()
     
-    exit(0)
 
     
+
