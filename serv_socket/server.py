@@ -21,7 +21,6 @@ app = socketio.WSGIApp(sio)
 
 @sio.on('connect')
 def connect(*args):
-    print(*args)
     sio.emit("welcome")
     print('connect')
 
@@ -40,17 +39,17 @@ def stream(sid,data):
     except:
         frames=sound   
     if sound.rms<SILENCE_THRESH*sound.max_possible_amplitude:
-        if endure<min_silence:
+        if not ticker:
+            frames=frames[-64:]
+            endure=0
+        elif endure<min_silence:
             endure+=1
         elif len(frames)<=300:
             pass
-        elif ticker:
+        else:
             ticker=False
             sio.emit('infer',inference(frames).encode())
             frames=None
-            endure=0
-        else:
-            frames=frames[-64:]
             endure=0
     else:
         ticker=True
