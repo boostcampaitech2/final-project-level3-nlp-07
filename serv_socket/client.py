@@ -8,7 +8,7 @@ def streams(sio):
     stream=audio.open(format=pyaudio.paInt16,channels=1,rate=16000,input=True,frames_per_buffer=2048)
     print('Sending...')
     while True:
-        data=stream.read(2048)
+        data=stream.read(512)
         if data:
             sio.emit('audio',data)
 
@@ -20,11 +20,9 @@ def welcome():
 
 @sio.on('infer')
 def infer(data):
-    print(data.decode())
-
-def main():
-    sio.connect('http://115.85.182.137:6017', wait_timeout = 20)
-    sio.wait()
+    print(data)
+    
 
 if __name__=='__main__':
-    main()
+    sio.connect('http://115.85.182.137:6017', wait_timeout = 20)
+    sio.wait()

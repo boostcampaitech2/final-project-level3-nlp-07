@@ -1,9 +1,11 @@
 import socketio
 from engineio.payload import Payload
-import eventlet
+from flask import Flask,render_template
 from pydub import AudioSegment
 from utils import inference
 from pydub.utils import db_to_float
+import os
+import eventlet
 
 
 Payload.max_decode_packets = 10000
@@ -11,17 +13,25 @@ Payload.max_decode_packets = 10000
 RATE = 16000
 CHUNK = 1024
 SILENCE_THRESH = db_to_float(-35)
-min_silence=int(RATE/CHUNK*0.2)
+min_silence=6 #int(RATE/CHUNK*0.2)
 endure=0
 frames=None
 ticker=False
 
+ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+STATIC_FOLDER = os.path.join(ROOT_PATH, "src/public")
+TEMPLATE_FOLDER = os.path.join(ROOT_PATH, "src/view")
+
 sio = socketio.Server(async_mode='eventlet', ping_timeout=60)
-app = socketio.WSGIApp(sio)
+app=Flask(__name__,static_url_path='/public',static_folder=STATIC_FOLDER,template_folder=TEMPLATE_FOLDER)
+app.wsgi_app = socketio.WSGIApp(sio,app.wsgi_app)
+@app.route('/')
+def index():
+    return render_template("index.html")
 
 @sio.on('connect')
-def connect(*args):
-    sio.emit("welcome")
+def connect(sid, environ):
+    sio.emit("welcome",to=sid)
     print('connect')
 
 @sio.on('start_stream')
@@ -40,7 +50,7 @@ def stream(sid,data):
         frames=sound   
     if sound.rms<SILENCE_THRESH*sound.max_possible_amplitude:
         if not ticker:
-            frames=frames[-64:]
+            frames=sound
             endure=0
         elif endure<min_silence:
             endure+=1
@@ -48,7 +58,7 @@ def stream(sid,data):
             pass
         else:
             ticker=False
-            sio.emit('infer',inference(frames).encode())
+            sio.start_background_task(sio.emit('infer',inference(frames)))
             frames=None
             endure=0
     else:
