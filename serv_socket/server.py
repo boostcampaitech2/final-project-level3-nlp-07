@@ -12,27 +12,31 @@ Payload.max_decode_packets = 10000
         
 RATE = 16000
 CHUNK = 1024
-SILENCE_THRESH = db_to_float(-35)
+SILENCE_THRESH = db_to_float(-40)
 min_silence=6 #int(RATE/CHUNK*0.2)
 endure=0
 frames=None
 ticker=False
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-STATIC_FOLDER = os.path.join(ROOT_PATH, "src/public")
+STATIC_FOLDER = os.path.join(ROOT_PATH, "src")
 TEMPLATE_FOLDER = os.path.join(ROOT_PATH, "src/view")
 
 sio = socketio.Server(async_mode='eventlet', ping_timeout=60)
-app=Flask(__name__,static_url_path='/public',static_folder=STATIC_FOLDER,template_folder=TEMPLATE_FOLDER)
+app=Flask(__name__,static_url_path='/src',static_folder=STATIC_FOLDER,template_folder=TEMPLATE_FOLDER)
 app.wsgi_app = socketio.WSGIApp(sio,app.wsgi_app)
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("ui.html")
 
 @sio.on('connect')
 def connect(sid, environ):
-    sio.emit("welcome",to=sid)
     print('connect')
+
+@sio.on('join')
+def join(sid,):
+    print('join')
+    sio.emit("welcome")
 
 @sio.on('start_stream')
 def start_stream(*args):
@@ -64,6 +68,12 @@ def stream(sid,data):
     else:
         ticker=True
         endure=0
+
+@sio.on('leave')
+def leave(sid):
+    sio.emit('leave')
+    print('leave')
+
 
 if __name__ == '__main__':
     eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 6006)), app)

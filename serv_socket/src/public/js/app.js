@@ -33,12 +33,12 @@ async function getMedia(){
     }
 }
 
-/* function handleCallClick(){
+function handleCallClick(){
     callBtn.style.display = "none";
     hangupBtn.style.display = "block";
     muteBtn.style.display = "block";
-
-} */
+    socket.emit('join')
+}
 function handleHangupClick(){
     hangupBtn.style.display = "none";
     muteBtn.style.display = "none";
@@ -59,18 +59,6 @@ function handleMuteClick(){
 }
 hangupBtn.addEventListener("click",handleHangupClick);
 muteBtn.addEventListener("click",handleMuteClick);
-
-//Welcome code
-
-async function initCall(){
-    call.hidden = false;
-    await getMedia();
-    console.log("initCall done!");
-}
-socket.on('connect',async ()=>{
-    await initCall();
-    console.log("connected");
-})
 
 socket.on("infer",(data)=>{
     console.log('Received infer',data);
