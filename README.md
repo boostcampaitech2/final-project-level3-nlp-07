@@ -17,14 +17,14 @@
 2. Long Silence Ignore  
 
 ### Frame-Cut with Stride
-
+![stride_frame_cut](https://user-images.githubusercontent.com/80743307/147046377-2aa91d6f-5dfc-4c46-9225-55d622543dfa.png)  
 
 ### Long Silence Ignore
-
+![long_silence](https://user-images.githubusercontent.com/80743307/147046384-c1944c54-4983-4455-869d-26917eff5b15.png)  
 
 
 ## Demonstration
-![image](https://user-images.githubusercontent.com/80743307/147045534-f9119939-e9da-4c66-b29b-5af64d9291ca.png)
+![image](https://user-images.githubusercontent.com/80743307/147045534-f9119939-e9da-4c66-b29b-5af64d9291ca.png)  
 
 
 ## 설치 방법
@@ -49,15 +49,6 @@ Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_
 Datasets : https://aihub.or.kr/aidata/105  
 
 
-
-## 개발 환경 설정
-
-모든 개발 의존성 설치 방법과 자동 테스트 슈트 실행 방법을 운영체제 별로 작성합니다.
-
-```sh
-make install
-npm test
-```
 
 ## 정보
 
