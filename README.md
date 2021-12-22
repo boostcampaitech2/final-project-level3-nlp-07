@@ -11,6 +11,18 @@
 [Github](https://github.com/Barleysack)|[Github](https://github.com/JIHOO97)|[Github](https://github.com/vgptnv)|[Github](https://github.com/Tentoto)|[Github](https://github.com/DagonLee)|[Github](https://github.com/ekdub92)|[Github](https://github.com/Doohae)
 
 
+## Main Task
+정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 다음과 같이 두 가지 Data I/O 방식 개선  
+1. Frame-Cut with Stride  
+2. Long Silence Ignore  
+
+### Frame-Cut with Stride
+
+
+### Long Silence Ignore
+
+
+
 ## Demonstration
 ![image](https://user-images.githubusercontent.com/80743307/147045534-f9119939-e9da-4c66-b29b-5af64d9291ca.png)
 
