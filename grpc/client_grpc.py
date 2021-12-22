@@ -20,20 +20,22 @@ MIN_SILENCE = 6
 endure = 0
 frames = None
 ticker = False
+switch = True
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_FOLDER = os.path.join(ROOT_PATH, "src")
 TEMPLATE_FOLDER = os.path.join(ROOT_PATH, "src/view")
 
 sio = socketio.Server(async_mode='eventlet', ping_timeout=60)
 
-app=Flask(__name__,static_url_path='/src',static_folder=STATIC_FOLDER,template_folder=TEMPLATE_FOLDER)
-app.wsgi_app = socketio.WSGIApp(sio,app.wsgi_app)
+app=Flask(__name__, static_url_path='/src', static_folder=STATIC_FOLDER, template_folder=TEMPLATE_FOLDER)
+app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
 
 @app.route('/')
 def index():
     return render_template("ui.html")
 
 class Phone:
+    
     def __init__(self,):
         self.switch = True
 
@@ -43,19 +45,19 @@ class Phone:
 
     def streams(self,S_ADDRESS):
         print('Sending...')
-        client_loop(S_ADDRESS,self.switch)
+        client_loop(S_ADDRESS)
         print('Stopped')
 
     def stop(self):
-        self.switch = False
-        
+        self.switch = False        
 
 
-def client_loop(S_ADDRESS,switch):
+def client_loop(S_ADDRESS):
     global sio
     global frames
     global ticker
     global endure
+    global switch
     
     audio_stream = pyaudio.PyAudio().open(format=pyaudio.paInt16,channels=1, #audio stream on
                                           rate=16000,input=True,frames_per_buffer=2048)
@@ -85,7 +87,6 @@ def client_loop(S_ADDRESS,switch):
                     elif len(frames)<=300:
                         pass
                     else:
-                        
                         break
                 else:
                     endure=0
@@ -97,10 +98,13 @@ def client_loop(S_ADDRESS,switch):
             response = stub.Talker(comm07_pb2.InfRequest(audio=frames)) #Get response
             sio.start_background_task(sio.emit,"infer", response.answer)
             sio.start_background_task(sio.emit,"infer", " ")
+            # sio.emit("infer", response.answer);
             print(response.answer)
             
-            
-    print(f"It took {(round(np.average(diagnosis),3))} on average")
+            if response.answer ==  "집에 가자":
+                break
+        
+    
 
 
 phone = Phone()
@@ -108,19 +112,32 @@ phone = Phone()
 @sio.on('join')
 def connect(*args):
     global phone
+    global switch
+    switch = True
     phone.do(S_ADDRESS)
     
-@sio.on('leave')
-def leave(sid):
-    sio.emit('leave')
+@sio.on('get_punc')
+def leave(sid, full_text):
     global frames
     global ticker
     global endure
+    global switch
     frames=None
     ticker=False
     endure=0
     print('leave')
-    phone.stop()
+    switch = False
+    
+    # send punc
+    with grpc.insecure_channel(S_ADDRESS) as channel:     
+        stub = comm07_pb2_grpc.Comm07Stub(channel) 
+        punkinput = comm07_pb2.InfReply(answer=full_text)
+        punkreply = stub.get_punkt(punkinput)
+        punkanswer = punkreply.punked
+        print(punkanswer, "punkanswer") 
+        sio.emit("send_punc", punkanswer)
+        
+    
             
 
     

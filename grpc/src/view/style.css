@@ -49,7 +49,7 @@ body {
     width: 100%;
     height: 100%;
 }
-.call-text {
+.call-text-box {
     width: 75%;
     height: 50%;
     background-color: black;
@@ -59,8 +59,19 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-.call-text::-webkit-scrollbar {
+.call-text-box::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+}
+.call-text {
+    color: white;
+}
+.underscore-container {
+    display: inline-block;
+    position: relative;
+    left: 0px;
+}
+.hidden {
+    opacity: 0;
 }
 .end-call {
     width: 4em;
