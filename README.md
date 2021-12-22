@@ -31,7 +31,7 @@
 
 `전미원`  Socket Communication • Audio Model Structure Search
 
-`정두해`  Language Model Build-Up • Dataset Processing
+`정두해`  Punctuation Language Model • Dataset Processing
 
 ## Main Tasks - Audio Modeling Part
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
