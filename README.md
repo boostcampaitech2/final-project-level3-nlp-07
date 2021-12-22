@@ -33,6 +33,9 @@
 
 `정두해`  Punctuation Language Model • Dataset Processing
 
+## Project Flow
+![structure](https://user-images.githubusercontent.com/80743307/147149303-0057b8dd-1865-4b46-94b3-e77ac040ce9a.png)
+
 ## Main Tasks - Audio Modeling Part
 Modeling Reference : https://github.com/hchung12/espnet-asr
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
