@@ -18,19 +18,6 @@
 [image6]: https://avatars.githubusercontent.com/u/42200769?v=4
 [image7]: https://avatars.githubusercontent.com/u/80743307?v=4  
 
-### Contribution
-
-`김보성`  Model Optimization • GRPC Communication
-
-`김지후`  ASR Model Performance Comparison • Frontend
-
-`김혜수`  Dataset Processing • Reference Paper Searching
-
-`박이삭`  Audio Modeling(Data I/O) • Socket Communication
-
-`전미원`  Socket Communication • Audio Model Structure Search
-
-`정두해`  Punctuation LM Build-Up • Dataset Processing
 
 ### Contribution
 
