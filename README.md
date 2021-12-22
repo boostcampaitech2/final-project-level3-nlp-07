@@ -36,11 +36,10 @@
 - Datasets : AI Hub 감성대화말뭉치 https://aihub.or.kr/aidata/7978
 
 ### LM Architecture
-  
 Modeling Reference : https://github.com/xashru/punctuation-restoration  
+<img width="550" alt="Screen Shot 2021-12-22 at 11 51 53 PM" src="https://user-images.githubusercontent.com/80743307/147119074-07465635-035d-40f8-84a9-6c59f2a76b8d.png">
+
   
-
-
 
 
 ## Demonstration
