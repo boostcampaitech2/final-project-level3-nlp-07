@@ -49,12 +49,12 @@ Modeling Reference : https://github.com/hchung12/espnet-asr
 
 
 ## Main Tasks - Language Modeling Part
+Modeling Reference : https://github.com/xashru/punctuation-restoration  
 오디오 모델을 통해 출력된 텍스트 출력에는 온점(.), 반점(,), 물음표(?)와 같은 punctuation mark가 별도로 출력되지 않는 문제점을 발견하고 이러한 raw text가 입력으로 주어졌을 때 punctuation mark를 자동으로 삽입하는 언어 모델 개발
 - Modeling : Pretrained "klue/roberta-small" + Bi-LSTM
 - Datasets : AI Hub 감성대화말뭉치 https://aihub.or.kr/aidata/7978, AI Hub Ksponspeech https://aihub.or.kr/aidata/105
 
 ### LM Architecture
-Modeling Reference : https://github.com/xashru/punctuation-restoration  
 <img width="550" alt="Screen Shot 2021-12-22 at 11 51 53 PM" src="https://user-images.githubusercontent.com/80743307/147119074-07465635-035d-40f8-84a9-6c59f2a76b8d.png">
 
   
