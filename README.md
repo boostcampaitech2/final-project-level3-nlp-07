@@ -18,6 +18,20 @@
 [image6]: https://avatars.githubusercontent.com/u/42200769?v=4
 [image7]: https://avatars.githubusercontent.com/u/80743307?v=4
 
+### Contribution
+
+`김보성`  Model Optimization • GRPC Communication
+
+`김지후`  ASR Model Performance Comparison • Frontend
+
+`김혜수`  Dataset Processing • Reference Paper Searching
+
+`박이삭`  Audio Modeling(Data I/O) • Socket Communication
+
+`전미원`  Socket Communication • Audio Model Structure Search
+
+`정두해`  Language Model Build-Up • Dataset Processing
+
 ## Main Tasks - Audio Modeling Part
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
 - Datasets : https://aihub.or.kr/aidata/105  
@@ -34,7 +48,7 @@
 
 ## Main Tasks - Language Modeling Part
 오디오 모델을 통해 출력된 텍스트 출력에는 온점(.), 반점(,), 물음표(?)와 같은 punctuation mark가 별도로 출력되지 않는 문제점을 발견하고 이러한 raw text가 입력으로 주어졌을 때 punctuation mark를 자동으로 삽입하는 언어 모델 개발
-- Modeling : Pretrained "klue/roberta-small" + LSTM
+- Modeling : Pretrained "klue/roberta-small" + Bi-LSTM
 - Datasets : AI Hub 감성대화말뭉치 https://aihub.or.kr/aidata/7978, AI Hub Ksponspeech https://aihub.or.kr/aidata/105
 
 ### LM Architecture
