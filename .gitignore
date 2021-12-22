@@ -8,3 +8,7 @@ __pycache__
 *.pth
 *.pt
 **.pt
+*.txt
+**.txt
+**/data
+**/output
