@@ -4,3 +4,4 @@
 /.ipynb_checkpoints
 **/node_modules
 /espnet-asr
+*.pth
