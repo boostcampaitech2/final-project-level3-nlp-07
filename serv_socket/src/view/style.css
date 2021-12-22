@@ -53,9 +53,14 @@ body {
     width: 75%;
     height: 50%;
     background-color: black;
-    border-radius: 20px;
     margin: 25% auto;
     color: white;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.call-text::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 .end-call {
     width: 4em;
