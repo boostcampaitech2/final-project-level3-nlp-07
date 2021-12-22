@@ -1,7 +1,10 @@
 import socketio
 import pyaudio
 
+
 sio = socketio.Client()
+SIO_CONNECT = 'http://115.85.183.65:6011'
+
 
 class Worker:
     def __init__(self,):
@@ -31,6 +34,7 @@ worker=Worker()
 def connect():
     print('connected')
 
+
 @sio.on('welcome')
 def welcome():
     print("start stream")
@@ -38,17 +42,19 @@ def welcome():
     sio.start_background_task(worker.do, sio)
     sio.emit('start_stream')
 
+
 @sio.on('infer')
 def infer(data):
     print(data)
+
 
 @sio.on('leave')
 def leave():
     print("disconnected")
     global worker
     worker.stop()
-    
+
 
 if __name__=='__main__':
-    sio.connect('http://115.85.182.137:6017', wait_timeout = 20)
+    sio.connect(SIO_CONNECT, wait_timeout = 20)
     sio.wait()
