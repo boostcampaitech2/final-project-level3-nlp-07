@@ -10,6 +10,13 @@
 ![image1][image1]|![image2][image2]|![image3][image3]|![image4][image4]|![image5][image5]|![image6][image6]|![image7][image7]
 [Github](https://github.com/Barleysack)|[Github](https://github.com/JIHOO97)|[Github](https://github.com/vgptnv)|[Github](https://github.com/Tentoto)|[Github](https://github.com/DagonLee)|[Github](https://github.com/ekdub92)|[Github](https://github.com/Doohae)
 
+[image1]: https://avatars.githubusercontent.com/u/56079922?v=4
+[image2]: https://avatars.githubusercontent.com/u/57887761?v=4
+[image3]: https://avatars.githubusercontent.com/u/62708568?v=4
+[image4]: https://avatars.githubusercontent.com/u/80071163?v=4
+[image5]: https://avatars.githubusercontent.com/u/43575986?v=4
+[image6]: https://avatars.githubusercontent.com/u/42200769?v=4
+[image7]: https://avatars.githubusercontent.com/u/80743307?v=4
 
 ## Main Task
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 다음과 같이 두 가지 Data I/O 방식 개선  
