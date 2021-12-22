@@ -5,20 +5,22 @@ from PyQt5.QtWidgets import *
 import sys
 import ui_test_clients as client
  
+ 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
  
 port = 5614
  
 class CWidget(QWidget):
+    
     def __init__(self):
         super().__init__()  
-         
         self.c = client.ClientSocket(self)
-        
         self.initUI()
+ 
  
     def __del__(self):
         self.c.stop()
+ 
  
     def initUI(self):
         self.setWindowTitle('Call!')
@@ -38,18 +40,13 @@ class CWidget(QWidget):
         box.addWidget(self.btn)
         box.addWidget(self.te)
       
- 
-        
- 
         # 전체 배치
-        
         self.setLayout(box)
         self.show()
     
     def answerReceived(self):
         buffer = self.c.msg
         self.te.append(buffer)
-    
     
     
     def connectClicked(self):
@@ -60,31 +57,28 @@ class CWidget(QWidget):
             self.btn.setStyleSheet("background-color: Red")   
             self.btn.setText('끊기')
             self.c.bConnect=True
-            
-            
         else:
-            
             self.c.stop()
             exit()
 
             
- 
-    
-    
-    
     def updateDisconnect(self):
         self.btn.setText('Call')
+ 
  
     def sendMsg(self):
         sendmsg = self.sendmsg.toPlainText()       
         self.c.send(sendmsg)        
         self.sendmsg.clear()
  
+ 
     def endcall(self):
         self.c.disconn = "ENDCALL"
  
+ 
     def closeEvent(self, e):
         self.c.stop()       
+ 
  
  
 if __name__ == '__main__':
