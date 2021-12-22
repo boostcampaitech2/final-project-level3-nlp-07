@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service Comm07 {
+    rpc Talker(InfRequest) returns (InfReply) {}
+}
+
+message InfRequest {
+    bytes audio = 1;
+
+}
+
+message InfReply {
+    string answer = 1;
+}
