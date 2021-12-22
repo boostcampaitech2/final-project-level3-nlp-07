@@ -34,6 +34,7 @@
 `정두해`  Punctuation Language Model • Dataset Processing
 
 ## Main Tasks - Audio Modeling Part
+Modeling Reference : https://github.com/hchung12/espnet-asr
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
 - Datasets : https://aihub.or.kr/aidata/105  
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같이 두 가지 Data I/O 방식 개선  
