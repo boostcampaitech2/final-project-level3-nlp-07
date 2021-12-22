@@ -18,7 +18,7 @@
 [image6]: https://avatars.githubusercontent.com/u/42200769?v=4
 [image7]: https://avatars.githubusercontent.com/u/80743307?v=4
 
-## Main Task
+## Main Tasks - Audio Part
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같이 두 가지 Data I/O 방식 개선  
 1. Frame-Cut with Stride : Silence 기준으로 frame이 나뉠 때 뒤 프레임의 초성 인식이 누락되는 경우 방지  
 2. Long Silence Ignore : Silence가 길게 지속될 때 가짜 출력이 나오는 것을 방지  
@@ -28,6 +28,19 @@
 
 ### Long Silence Ignore
 <img width="600" alt="long silence" src="https://user-images.githubusercontent.com/80743307/147046792-dc98d6db-6634-4af5-aee2-ebbd591e3e61.png">  
+
+
+## Main Tasks - Language Model
+오디오 모델을 통해 출력된 텍스트 출력에는 온점(.), 반점(,), 물음표(?)와 같은 punctuation mark가 별도로 출력되지 않는 문제점을 발견하고 이러한 raw text가 입력으로 주어졌을 때 punctuation mark를 자동으로 삽입하는 언어 모델 개발
+- Modeling : Pretrained "klue/roberta-small" + LSTM
+- Datasets : AI Hub 감성대화말뭉치 https://aihub.or.kr/aidata/7978
+
+### LM Architecture
+  
+Modeling Reference : https://github.com/xashru/punctuation-restoration  
+  
+
+
 
 
 ## Demonstration
