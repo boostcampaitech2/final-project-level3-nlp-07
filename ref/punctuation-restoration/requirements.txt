@@ -1,0 +1,2 @@
+transformers==v2.11.0
+pytorch-crf
