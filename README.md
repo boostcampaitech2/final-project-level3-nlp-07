@@ -20,8 +20,8 @@
 
 ## Main Task
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 다음과 같이 두 가지 Data I/O 방식 개선  
-1. Frame-Cut with Stride  
-2. Long Silence Ignore  
+1. Frame-Cut with Stride : Silence 기준으로 frame이 나뉠 때 뒤 프레임의 초성 인식이 누락되는 경우 방지  
+2. Long Silence Ignore : Silence가 길게 지속될 때 가짜 출력이 나오는 것을 방지  
 
 ### Frame-Cut with Stride
 <img width="600" alt="stride" src="https://user-images.githubusercontent.com/80743307/147046780-8a1443d7-05c2-440f-a0e0-8292fed4975f.png">  
