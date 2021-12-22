@@ -16,7 +16,21 @@
 [image4]: https://avatars.githubusercontent.com/u/80071163?v=4
 [image5]: https://avatars.githubusercontent.com/u/43575986?v=4
 [image6]: https://avatars.githubusercontent.com/u/42200769?v=4
-[image7]: https://avatars.githubusercontent.com/u/80743307?v=4
+[image7]: https://avatars.githubusercontent.com/u/80743307?v=4  
+
+### Contribution
+
+`김보성`  Model Optimization • GRPC Communication
+
+`김지후`  ASR Model Performance Comparison • Frontend
+
+`김혜수`  Dataset Processing • Reference Paper Searching
+
+`박이삭`  Audio Modeling(Data I/O) • Socket Communication
+
+`전미원`  Socket Communication • Audio Model Structure Search
+
+`정두해`  Language Model Build-Up • Dataset Processing
 
 ## Main Tasks - Audio Modeling Part
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
