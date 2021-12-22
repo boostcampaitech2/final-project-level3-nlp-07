@@ -12,11 +12,13 @@ Payload.max_decode_packets = 10000
         
 RATE = 16000
 CHUNK = 1024
-SILENCE_THRESH = db_to_float(-40)
+SILENCE_THRESH = db_to_float(-40)*32768
 min_silence=6 #int(RATE/CHUNK*0.2)
 endure=0
 frames=None
 ticker=False
+thresh=SILENCE_THRESH
+mrms=[0,1]
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 STATIC_FOLDER = os.path.join(ROOT_PATH, "src")
@@ -47,14 +49,23 @@ def stream(sid,data):
     global frames
     global ticker
     global endure
+    global thresh
     sound=AudioSegment(data=data,sample_width=2,frame_rate=RATE,channels=1)
     try:
         frames += sound
     except:
-        frames=sound   
-    if sound.rms<SILENCE_THRESH*sound.max_possible_amplitude:
+        frames=sound
+    ###################################
+    if not mrms:
+        mrms[0]=sound.rms
+    else:
+        mrms[0]=((mrms[0]**2*mrms[1]+sound.rms**2)/(mrms[1]+1))**0.5
+    mrms[1]+=1
+    thresh=0.5*mrms[0]
+    ###################################
+    if sound.rms<thresh:
         if not ticker:
-            frames=sound
+            frames=frames[-64:]
             endure=0
         elif endure<min_silence:
             endure+=1
@@ -63,7 +74,7 @@ def stream(sid,data):
         else:
             ticker=False
             sio.start_background_task(sio.emit('infer',inference(frames)))
-            frames=None
+            frames=frames[-64:]
             endure=0
     else:
         ticker=True
@@ -72,6 +83,13 @@ def stream(sid,data):
 @sio.on('leave')
 def leave(sid):
     sio.emit('leave')
+    global frames
+    global ticker
+    global endure
+    frames=None
+    ticker=False
+    endure=0
+    mrms[0],mrms[1]=0,1
     print('leave')
 
 
