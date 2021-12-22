@@ -19,12 +19,23 @@ class Comm07Stub(object):
                 request_serializer=comm07__pb2.InfRequest.SerializeToString,
                 response_deserializer=comm07__pb2.InfReply.FromString,
                 )
+        self.get_punkt = channel.unary_unary(
+                '/Comm07/get_punkt',
+                request_serializer=comm07__pb2.InfReply.SerializeToString,
+                response_deserializer=comm07__pb2.PunkedReply.FromString,
+                )
 
 
 class Comm07Servicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Talker(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def get_punkt(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -37,6 +48,11 @@ def add_Comm07Servicer_to_server(servicer, server):
                     servicer.Talker,
                     request_deserializer=comm07__pb2.InfRequest.FromString,
                     response_serializer=comm07__pb2.InfReply.SerializeToString,
+            ),
+            'get_punkt': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_punkt,
+                    request_deserializer=comm07__pb2.InfReply.FromString,
+                    response_serializer=comm07__pb2.PunkedReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -62,5 +78,22 @@ class Comm07(object):
         return grpc.experimental.unary_unary(request, target, '/Comm07/Talker',
             comm07__pb2.InfRequest.SerializeToString,
             comm07__pb2.InfReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def get_punkt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Comm07/get_punkt',
+            comm07__pb2.InfReply.SerializeToString,
+            comm07__pb2.PunkedReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

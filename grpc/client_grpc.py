@@ -28,6 +28,7 @@ sio = socketio.Server(async_mode='eventlet', ping_timeout=60)
 
 app=Flask(__name__,static_url_path='/src',static_folder=STATIC_FOLDER,template_folder=TEMPLATE_FOLDER)
 app.wsgi_app = socketio.WSGIApp(sio,app.wsgi_app)
+
 @app.route('/')
 def index():
     return render_template("ui.html")
@@ -67,7 +68,6 @@ def client_loop(S_ADDRESS,switch):
             while True:
                 
                 audio = audio_stream.read(512,exception_on_overflow=False)
-                
                 audio_checker = AudioSegment(audio,sample_width=2, frame_rate=16000, channels=1)
                 
                 try : 
@@ -90,18 +90,15 @@ def client_loop(S_ADDRESS,switch):
                 else:
                     endure=0
                     ticker=True
-                    
+            
             ticker = False
             endure = 0
-            start= time()
+            frames=frames[:-64]
             response = stub.Talker(comm07_pb2.InfRequest(audio=frames)) #Get response
-            end=time() 
-            diagnosis.append((end-start))
-            frames = frames[-64:]
+            sio.start_background_task(sio.emit,"infer", response.answer)
+            sio.start_background_task(sio.emit,"infer", " ")
             print(response.answer)
-            sio.emit('infer', response.answer)
-            if response.answer == '안녕':
-                break
+            
             
     print(f"It took {(round(np.average(diagnosis),3))} on average")
 
@@ -111,7 +108,7 @@ phone = Phone()
 @sio.on('join')
 def connect(*args):
     global phone
-    sio.start_background_task(phone.do,S_ADDRESS)
+    phone.do(S_ADDRESS)
     
 @sio.on('leave')
 def leave(sid):
@@ -123,13 +120,8 @@ def leave(sid):
     ticker=False
     endure=0
     print('leave')
+    phone.stop()
             
-    
-    
-
-    
-
-
 
     
 if __name__=='__main__':
