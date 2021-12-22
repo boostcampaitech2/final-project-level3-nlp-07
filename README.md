@@ -17,10 +17,10 @@
 2. Long Silence Ignore  
 
 ### Frame-Cut with Stride
-![stride_frame_cut](https://user-images.githubusercontent.com/80743307/147046377-2aa91d6f-5dfc-4c46-9225-55d622543dfa.png)  
+<img width="700" alt="stride" src="https://user-images.githubusercontent.com/80743307/147046780-8a1443d7-05c2-440f-a0e0-8292fed4975f.png">  
 
 ### Long Silence Ignore
-![long_silence](https://user-images.githubusercontent.com/80743307/147046384-c1944c54-4983-4455-869d-26917eff5b15.png)  
+<img width="700" alt="long silence" src="https://user-images.githubusercontent.com/80743307/147046792-dc98d6db-6634-4af5-aee2-ebbd591e3e61.png">  
 
 
 ## Demonstration
