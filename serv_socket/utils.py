@@ -37,9 +37,37 @@ model = Speech2Text(
 
 preprocess_fn=ASRTask.build_preprocess_fn(model.asr_train_args, False)
 
-
 def inference(frames):
+    print("Inference")
     frame=pcm2float(frames.get_array_of_samples())
     tens=preprocess_fn('1',{'speech':frame}) #input : (uid,dict)-> output : dict{'speech':array}
     output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
     return output[0][0]
+
+class STORAGE:
+    def __init__(self,):
+        self.frames=None
+        self.endure=0
+        self.ticker=False
+        self.mean_rms=[0,1]
+        self.min_silence=6
+
+    def initialize(self,):
+        self.__init__()
+
+    def get_values(self,):
+        return self.frames,self.endure,self.ticker
+
+    def save_values(self,frames,endure,ticker):
+        self.frames=frames
+        self.endure=endure
+        self.ticker=ticker
+
+    def get_mean_rms(self,rms):
+        if not self.mean_rms[0]:
+            self.mean_rms[0]=rms
+        else:
+            self.mean_rms[0]=((self.mean_rms[0]**2*self.mean_rms[1]+rms**2)/(self.mean_rms[1]+1))**0.5
+        self.mean_rms[1]+=1
+        thresh=0.5*self.mean_rms[0]
+        return thresh

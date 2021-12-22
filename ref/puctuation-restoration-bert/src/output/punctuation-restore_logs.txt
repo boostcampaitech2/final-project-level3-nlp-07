@@ -1,3 +1,0 @@
-Namespace(alpha_del=0.4, alpha_sub=0.4, augment_rate=0.0, augment_type='all', batch_size=8, cuda=True, data_path='./data/aihub/', decay=0, epoch=10, freeze_bert=False, gradient_clip=-1, lr=5e-06, lstm_dim=-1, name='punctuation-restore', pretrained_model='klue/roberta-small', save_path='./output/', seed=1, sequence_length=256, sub_style='unk', use_crf=False)
-epoch: 0, Train loss: 0.06534786438550264, Train accuracy: 0.965688833790363
-epoch: 0, Val loss: 0.026429892262469414, Val accuracy: 0.9836411394041673
