@@ -6,14 +6,14 @@
 
 ## 설치 방법
 
-MAC & 리눅스:
+Mac & Linux:
 
 ```sh
 brew install portaudio
 pip install -r requirements.txt
 ```
 
-윈도우:
+Windows:
 
 ```sh
 sudo apt-get install portaudio
@@ -22,7 +22,10 @@ pip install -r requirements.txt
 
 ## 사용 데이터셋 및 사전학습 모델
 
-Pretrained : 
+Pretrained : "https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1"  
+Datasets : https://aihub.or.kr/aidata/105  
+
+
 
 ## 개발 환경 설정
 
@@ -32,21 +35,6 @@ Pretrained :
 make install
 npm test
 ```
-
-## 업데이트 내역
-
-* 0.2.1
-    * 수정: 문서 업데이트 (모듈 코드 동일)
-* 0.2.0
-    * 수정: `setDefaultXYZ()` 메서드 제거
-    * 추가: `init()` 메서드 추가
-* 0.1.1
-    * 버그 수정: `baz()` 메서드 호출 시 부팅되지 않는 현상 (@컨트리뷰터 감사합니다!)
-* 0.1.0
-    * 첫 출시
-    * 수정: `foo()` 메서드 네이밍을 `bar()`로 수정
-* 0.0.1
-    * 작업 진행 중
 
 ## 정보
 
