@@ -27,7 +27,7 @@
 
 `김혜수`  Dataset Processing • Reference Paper Searching
 
-`박이삭`  Audio Modeling (Data I/O) • Socket Communication
+`박이삭`  Auto Speech Recognition Modeling (Data I/O) • Socket Communication
 
 `전미원`  Socket Communication • Audio Model Structure Search
 
