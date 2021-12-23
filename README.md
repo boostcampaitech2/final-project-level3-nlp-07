@@ -41,6 +41,8 @@
 Modeling Reference : https://github.com/hchung12/espnet-asr
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
 - Datasets : https://aihub.or.kr/aidata/105  
+
+
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같은 방식으로 Data I/O 방식 개선  
 
 ### Definition of "Frame" in conversation
@@ -67,6 +69,8 @@ Modeling Reference : https://github.com/hchung12/espnet-asr
 Modeling Reference : https://github.com/xashru/punctuation-restoration  
 - Modeling : Pretrained "klue/roberta-small" + Bi-LSTM
 - Datasets : AI Hub 감성대화말뭉치 https://aihub.or.kr/aidata/7978, AI Hub Ksponspeech https://aihub.or.kr/aidata/105  
+
+
 오디오 모델을 통해 출력된 텍스트 출력에는 온점(.), 반점(,), 물음표(?)와 같은 punctuation mark가 별도로 출력되지 않는 문제점을 발견하고 이러한 raw text가 입력으로 주어졌을 때 punctuation mark를 자동으로 삽입하는 언어 모델 개발  
 
 ### LM Architecture
