@@ -21,7 +21,7 @@
 
 ### Contribution
 
-`김보성`  Model Optimization • GRPC Communication
+`김보성`  Model Optimization • gRPC Communication
 
 `김지후`  ASR Model Performance Comparison • Frontend
 
