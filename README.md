@@ -34,7 +34,7 @@
 `정두해`  Auto Punctuation Language Modeling • Dataset Processing
 
 ## Project Flow
-<img width="700" alt="Screen Shot 2021-12-23 at 5 08 24 AM" src="https://user-images.githubusercontent.com/80743307/147149498-4b90edc5-0873-4360-9641-7371240d698c.png">
+<img width="750" alt="Screen Shot 2021-12-23 at 11 08 07 PM" src="https://user-images.githubusercontent.com/80743307/147251548-d99a3e7b-3df3-4b21-8a05-ff87a31c5f8b.png">
 
 
 ## Main Tasks - Audio Modeling Part
