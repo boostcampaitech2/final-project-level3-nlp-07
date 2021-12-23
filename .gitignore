@@ -7,3 +7,9 @@ __pycache__
 /espnet-asr
 *.pth
 *.pt
+**.pt
+*.txt
+**.txt
+**/data
+**/output
+

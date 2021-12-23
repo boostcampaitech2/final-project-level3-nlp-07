@@ -9,6 +9,8 @@ class Signal(QObject):
     recv_signal = pyqtSignal(str)
     disconn_signal = pyqtSignal()  
  
+
+
 class ClientSocket:
  
     def __init__(self, parent):        
@@ -18,12 +20,13 @@ class ClientSocket:
         self.bConnect = False
         self.msg = ""
          
+         
     def __del__(self):
         self.stop()
  
+ 
     def connectServer(self, ip, port):
         self.client = socket(AF_INET, SOCK_STREAM)           
- 
         try:
             self.client.connect( (ip, port) )
         except Exception as e:
@@ -36,14 +39,12 @@ class ClientSocket:
             
             self.sends.start()
             self.recvs.start()
-            
-            
             print('Connected')
  
         return True
  
+ 
     def stop(self):
-        
         self.bConnect = False       
         if hasattr(self, 'client'):            
             self.client.close()
@@ -51,12 +52,11 @@ class ClientSocket:
             print('Client Stop') 
             exit(0)
  
+ 
     def receive(self, client):
-        
         while self.bConnect:            
             try:
                 recv = client.recv(1024)
-                
             except Exception as e:
                 # print('Recv() Error :', e)                
                 self.bConnect=False
@@ -66,7 +66,7 @@ class ClientSocket:
                     self.msg = msg
                     self.recv.recv_signal.emit(msg)
                     print('[RECV]:', msg)
-        
+ 
  
     def send(self, client):
         print("entered send\n")
@@ -88,10 +88,10 @@ class ClientSocket:
                     print("program ends due to the connection issue. Check your code")
                     self.stop()
                     return
+                
         data="End"
         client.send(data.encode())
 
         if not self.bConnect:
             return
  
-        

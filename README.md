@@ -16,9 +16,31 @@
 [image4]: https://avatars.githubusercontent.com/u/80071163?v=4
 [image5]: https://avatars.githubusercontent.com/u/43575986?v=4
 [image6]: https://avatars.githubusercontent.com/u/42200769?v=4
-[image7]: https://avatars.githubusercontent.com/u/80743307?v=4
+[image7]: https://avatars.githubusercontent.com/u/80743307?v=4  
 
-## Main Task
+
+### Contribution
+
+`김보성`  Model Optimization • gRPC Communication
+
+`김지후`  ASR Model Performance Comparison • Frontend
+
+`김혜수`  Dataset Processing • Reference Paper Searching
+
+`박이삭`  Auto Speech Recognition Modeling (Data I/O) • Socket Communication
+
+`전미원`  Socket Communication • Audio Model Structure Search
+
+`정두해`  Auto Punctuation Language Modeling • Dataset Processing
+
+## Project Flow
+<img width="750" alt="Screen Shot 2021-12-23 at 11 08 07 PM" src="https://user-images.githubusercontent.com/80743307/147251548-d99a3e7b-3df3-4b21-8a05-ff87a31c5f8b.png">
+
+
+## Main Tasks - Audio Modeling Part
+Modeling Reference : https://github.com/hchung12/espnet-asr
+- Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
+- Datasets : https://aihub.or.kr/aidata/105  
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같이 두 가지 Data I/O 방식 개선  
 1. Frame-Cut with Stride : Silence 기준으로 frame이 나뉠 때 뒤 프레임의 초성 인식이 누락되는 경우 방지  
 2. Long Silence Ignore : Silence가 길게 지속될 때 가짜 출력이 나오는 것을 방지  
@@ -28,6 +50,18 @@
 
 ### Long Silence Ignore
 <img width="600" alt="long silence" src="https://user-images.githubusercontent.com/80743307/147046792-dc98d6db-6634-4af5-aee2-ebbd591e3e61.png">  
+
+
+## Main Tasks - Language Modeling Part
+Modeling Reference : https://github.com/xashru/punctuation-restoration  
+오디오 모델을 통해 출력된 텍스트 출력에는 온점(.), 반점(,), 물음표(?)와 같은 punctuation mark가 별도로 출력되지 않는 문제점을 발견하고 이러한 raw text가 입력으로 주어졌을 때 punctuation mark를 자동으로 삽입하는 언어 모델 개발
+- Modeling : Pretrained "klue/roberta-small" + Bi-LSTM
+- Datasets : AI Hub 감성대화말뭉치 https://aihub.or.kr/aidata/7978, AI Hub Ksponspeech https://aihub.or.kr/aidata/105
+
+### LM Architecture
+<img width="550" alt="Screen Shot 2021-12-22 at 11 51 53 PM" src="https://user-images.githubusercontent.com/80743307/147119074-07465635-035d-40f8-84a9-6c59f2a76b8d.png">
+
+  
 
 
 ## Demonstration
@@ -49,11 +83,6 @@ Windows:
 sudo apt-get install portaudio
 pip install -r requirements.txt
 ```
-
-## 사용 데이터셋 및 사전학습 모델
-
-Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
-Datasets : https://aihub.or.kr/aidata/105  
 
 
 
