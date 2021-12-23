@@ -41,26 +41,19 @@
 Modeling Reference : https://github.com/hchung12/espnet-asr
 - Pretrained : https://zenodo.org/record/4103351/files/asr_train_asr_transformer2_ddp_raw_bpe_valid.acc.ave.zip?download=1  
 - Datasets : https://aihub.or.kr/aidata/105  
-정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같이 두 가지 Data I/O 방식 개선  
-1. Frame-Cut with Stride : Silence 기준으로 frame이 나뉠 때 뒤 프레임의 초성 인식이 누락되는 경우 방지  
-2. Long Silence Ignore : Silence가 길게 지속될 때 가짜 출력이 나오는 것을 방지  
+정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같은 방식으로 Data I/O 방식 개선  
 
-### Frame-Cut with Stride
-<img width="600" alt="stride" src="https://user-images.githubusercontent.com/80743307/147046780-8a1443d7-05c2-440f-a0e0-8292fed4975f.png">  
-
-### Long Silence Ignore
-<img width="600" alt="long silence" src="https://user-images.githubusercontent.com/80743307/147046792-dc98d6db-6634-4af5-aee2-ebbd591e3e61.png">  
-
-<img width="606" alt="Screen Shot 2021-12-24 at 2 20 51 AM" src="https://user-images.githubusercontent.com/80743307/147273397-ff275569-b723-4dc3-bad7-00a8b58d71da.png">
+### Implementation
+<img width="600" alt="Screen Shot 2021-12-24 at 2 20 51 AM" src="https://user-images.githubusercontent.com/80743307/147273397-ff275569-b723-4dc3-bad7-00a8b58d71da.png">
 
 
-<img width="606" alt="Screen Shot 2021-12-24 at 2 20 45 AM" src="https://user-images.githubusercontent.com/80743307/147273409-790f4d49-7c3b-4d99-9c2e-24885adc02a8.png">
+<img width="600" alt="Screen Shot 2021-12-24 at 2 20 45 AM" src="https://user-images.githubusercontent.com/80743307/147273409-790f4d49-7c3b-4d99-9c2e-24885adc02a8.png">
 
 
-<img width="621" alt="Screen Shot 2021-12-24 at 2 21 11 AM" src="https://user-images.githubusercontent.com/80743307/147273427-c2e82346-f137-43fc-b7c3-b8df26338367.png">
+<img width="600" alt="Screen Shot 2021-12-24 at 2 21 11 AM" src="https://user-images.githubusercontent.com/80743307/147273427-c2e82346-f137-43fc-b7c3-b8df26338367.png">
 
 
-<img width="664" alt="Screen Shot 2021-12-24 at 2 21 03 AM" src="https://user-images.githubusercontent.com/80743307/147273475-d20c2411-aa1c-41f0-827e-c20fdf1b273e.png">
+<img width="600" alt="Screen Shot 2021-12-24 at 2 21 03 AM" src="https://user-images.githubusercontent.com/80743307/147273475-d20c2411-aa1c-41f0-827e-c20fdf1b273e.png">
 
 
 
