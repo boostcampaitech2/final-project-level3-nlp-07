@@ -59,7 +59,7 @@ def stream(sid,data):
             pass
         else:
             ticker=False
-            sio.emit('infer',inference(frames,storage))
+            sio.start_background_task(inference,sio,frames,storage)
             frames=frames[-64:]
             endure=0
     else:

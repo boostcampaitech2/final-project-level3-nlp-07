@@ -37,14 +37,19 @@ model = Speech2Text(
 
 preprocess_fn=ASRTask.build_preprocess_fn(model.asr_train_args, False)
 
-def inference(frames,storage):
-    print("Inference")
+prev_frame = []
+
+def inference(sio,frames,storage):
     frame=pcm2float(frames.get_array_of_samples())
-    tens=preprocess_fn('1',{'speech':frame}) #input : (uid,dict)-> output : dict{'speech':array}
-    output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
-    storage.update_min_silence(len(frames),len(output[0][0].replace(" ",'')))
-    print(output[0][0])
-    return output[0][0]
+    global prev_frame
+    if len(prev_frame) != len(frame):
+        prev_frame = frame
+        print("Inference")
+        tens=preprocess_fn('1',{'speech':frame}) #input : (uid,dict)-> output : dict{'speech':array}
+        output=model(**{'speech':torch.from_numpy(tens['speech'])}) #input : dict{'speech':Tensor,'speech_lengths':Tensor}
+        storage.update_min_silence(len(frames),len(output[0][0].replace(" ",'')))
+        print(output[0][0])
+        return sio.emit("infer",output[0][0])
 
 class STORAGE:
     def __init__(self,):
@@ -67,7 +72,7 @@ class STORAGE:
 
     def update_min_silence(self,frames_len,char_num):
         self.min_silence=max(5,int(6*(1+((frames_len/1000*4.5/max(1,char_num)-1)*0.5))))
-        print('min_silence',self.min_silence)
+        # print('min_silence',self.min_silence)
 
     def get_mean_rms(self,rms):
         if not self.mean_rms[0]:
@@ -75,6 +80,6 @@ class STORAGE:
         else:
             self.mean_rms[0]=((self.mean_rms[0]**2*self.mean_rms[1]+rms**2)/(self.mean_rms[1]+1))**0.5
         self.mean_rms[1]+=1
-        thresh=0.5*self.mean_rms[0]
-        print("Thresh:",thresh)
+        thresh=0.4*self.mean_rms[0]
+        # print("Thresh:",thresh)
         return max(330,thresh)
