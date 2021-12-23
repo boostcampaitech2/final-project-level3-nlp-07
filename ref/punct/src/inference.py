@@ -72,4 +72,7 @@ def punct_inference(text):
     print(result)
     '''with open(args.out_file, 'w', encoding='utf-8') as f:
         f.write(result)'''
+    result=result.replace('.','.\n')
+    result=result.replace('?','?\n')
+    result=result.replace(',',',\n')
     return result
