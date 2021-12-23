@@ -77,6 +77,7 @@ Modeling Reference : https://github.com/xashru/punctuation-restoration
 
 ## Demonstration
 ![image](https://user-images.githubusercontent.com/80743307/147045534-f9119939-e9da-4c66-b29b-5af64d9291ca.png)  
+<img width="944" alt="Screen Shot 2021-12-24 at 3 18 15 AM" src="https://user-images.githubusercontent.com/80743307/147278356-fe12eefc-f12f-4535-9df8-fbea548bb4c4.png">
 
 
 ## 설치 방법
