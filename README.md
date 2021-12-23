@@ -27,11 +27,11 @@
 
 `김혜수`  Dataset Processing • Reference Paper Searching
 
-`박이삭`  Audio Modeling(Data I/O) • Socket Communication
+`박이삭`  Audio Modeling (Data I/O) • Socket Communication
 
 `전미원`  Socket Communication • Audio Model Structure Search
 
-`정두해`  Punctuation Language Model • Dataset Processing
+`정두해`  Auto Punctuation Language Modeling • Dataset Processing
 
 ## Project Flow
 <img width="700" alt="Screen Shot 2021-12-23 at 5 08 24 AM" src="https://user-images.githubusercontent.com/80743307/147149498-4b90edc5-0873-4360-9641-7371240d698c.png">
