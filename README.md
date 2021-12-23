@@ -48,16 +48,16 @@ Modeling Reference : https://github.com/hchung12/espnet-asr
 
 
 
-### Implementation
+### Implementation 1: Silence Threshold
 <img width="600" alt="Screen Shot 2021-12-24 at 2 20 51 AM" src="https://user-images.githubusercontent.com/80743307/147273397-ff275569-b723-4dc3-bad7-00a8b58d71da.png">
 
-
+### Implementation 2: Silence Length
 <img width="600" alt="Screen Shot 2021-12-24 at 2 20 45 AM" src="https://user-images.githubusercontent.com/80743307/147273409-790f4d49-7c3b-4d99-9c2e-24885adc02a8.png">
 
-
+### Implementation 3: 
 <img width="600" alt="Screen Shot 2021-12-24 at 2 21 11 AM" src="https://user-images.githubusercontent.com/80743307/147273427-c2e82346-f137-43fc-b7c3-b8df26338367.png">
 
-
+### Implementation 4: 
 <img width="600" alt="Screen Shot 2021-12-24 at 2 21 03 AM" src="https://user-images.githubusercontent.com/80743307/147273475-d20c2411-aa1c-41f0-827e-c20fdf1b273e.png">
 
 
