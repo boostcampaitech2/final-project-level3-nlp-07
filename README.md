@@ -43,6 +43,11 @@ Modeling Reference : https://github.com/hchung12/espnet-asr
 - Datasets : https://aihub.or.kr/aidata/105  
 정확도가 높지만 streaming에 특화되지 않은 모델을 streaming 처리가 가능한 형태로 바꾸기 위해 오디오 파일 변환 과정 생략과 함께 아래와 같은 방식으로 Data I/O 방식 개선  
 
+### Definition of Frame
+![frame](https://user-images.githubusercontent.com/80743307/147274228-59833feb-f6ad-47bc-ba18-191380879324.png)
+
+
+
 ### Implementation
 <img width="600" alt="Screen Shot 2021-12-24 at 2 20 51 AM" src="https://user-images.githubusercontent.com/80743307/147273397-ff275569-b723-4dc3-bad7-00a8b58d71da.png">
 
