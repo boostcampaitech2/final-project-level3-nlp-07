@@ -80,7 +80,8 @@ Modeling Reference : https://github.com/xashru/punctuation-restoration
 
 
 ## Demonstration
-![image](https://user-images.githubusercontent.com/80743307/147045534-f9119939-e9da-4c66-b29b-5af64d9291ca.png) 
+<img width="964" alt="Screen Shot 2021-12-24 at 12 05 15 PM" src="https://user-images.githubusercontent.com/80743307/147311038-dd94dedf-e644-43fd-84a5-b106e8b90bc6.png">
+
 
 
 **시연 영상**
