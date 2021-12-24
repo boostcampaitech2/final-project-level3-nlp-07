@@ -6,6 +6,11 @@ __pycache__
 /.ipynb_checkpoints
 **/node_modules
 /espnet-asr
-*.pth
-*.pt
+**/*.pth
 .DS_*
+**/*.pt
+*.txt
+**.txt
+**/data
+**/output
+

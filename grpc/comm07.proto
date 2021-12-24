@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+service Comm07 {
+    rpc Talker(InfRequest) returns (InfReply) {}
+    rpc get_punkt(InfReply) returns (PunkedReply) {}
+}
+
+message InfRequest {
+    bytes audio = 1;
+}
+
+message InfReply {
+    string answer = 1;
+}
+
+
+message PunkedReply {
+    string punked = 1;
+}
