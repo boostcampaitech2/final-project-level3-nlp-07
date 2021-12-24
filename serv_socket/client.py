@@ -1,6 +1,6 @@
 import socketio
 import pyaudio
-from config import SIO_DEST
+from client_config import SIO_DEST
 
 class Worker:
     def __init__(self,):

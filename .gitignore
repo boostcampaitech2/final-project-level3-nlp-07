@@ -1,4 +1,5 @@
 **/__pycache__
+**/data
 __pycache__
 /ESPNET
 /Ksponspeech
@@ -7,3 +8,4 @@ __pycache__
 /espnet-asr
 *.pth
 *.pt
+.DS_*
