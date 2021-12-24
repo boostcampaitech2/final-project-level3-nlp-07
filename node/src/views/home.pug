@@ -1,0 +1,23 @@
+doctype html 
+html(lang="ko")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title Home
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+    body
+        header 
+            h1 Stream STT Demo
+        main
+            div#welcome 
+                form
+                    input(placeholer="room name",required,type="text")
+                    button Enter room
+            div#call
+                audio(autoplay)
+                button#callbtn Call
+                button#hangup Hang up
+                button#mute Mute
+
+        script(src="/socket.io/socket.io.js")
+        script(src="/public/js/app.js")

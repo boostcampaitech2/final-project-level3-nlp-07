@@ -1,2 +1,0 @@
-ref/mdl/exp/asr_train_asr_transformer2_ddp_raw_bpe/valid.acc.ave_10best.pth filter=lfs diff=lfs merge=lfs -text
-ref/mdl/ksponspeech.zip filter=lfs diff=lfs merge=lfs -text

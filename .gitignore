@@ -1,6 +1,11 @@
 **/__pycache__
+**/data
+__pycache__
 /ESPNET
 /Ksponspeech
 /.ipynb_checkpoints
 **/node_modules
 /espnet-asr
+*.pth
+*.pt
+.DS_*

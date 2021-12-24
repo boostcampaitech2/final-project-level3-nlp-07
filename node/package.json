@@ -1,0 +1,22 @@
+{
+    "name": "streamSpeech2Text",
+    "version": "1.0.0",
+    "description": "Stream speech to text for call captioning",
+    "license": "MIT",
+    "scripts": {
+        "dev": "nodemon"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.16.0",
+        "@babel/core": "^7.16.0",
+        "@babel/node": "^7.16.0",
+        "@babel/preset-env": "^7.16.4",
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "pug": "^3.0.2",
+        "socket.io": "^4.4.0",
+        "ws": "^8.3.0"
+    }
+}
