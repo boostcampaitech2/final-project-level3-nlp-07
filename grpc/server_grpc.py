@@ -116,9 +116,6 @@ class Comm07Servicer(comm07_pb2_grpc.Comm07Servicer):
         
         return result
 
-
-
-    
     def Talker(self,request,context):
         return comm07_pb2.InfReply(answer=self.inference(request.audio))
     
