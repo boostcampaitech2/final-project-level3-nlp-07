@@ -86,7 +86,7 @@ Modeling Reference : https://github.com/xashru/punctuation-restoration
 
 **시연 영상**
 
-[![Demo Video](https://img.youtube.com/vi/J1TNSOZUbfU/0.jpg)](https://www.youtube.com/watch?v=J1TNSOZUbfU "너의 목소리가 보여 시연 연상")
+[![Demo Video](https://img.youtube.com/vi/J1TNSOZUbfU/0.jpg)](https://www.youtube.com/watch?v=J1TNSOZUbfU "너의 목소리가 보여 시연 영상")
 
 
 ## 설치 방법
